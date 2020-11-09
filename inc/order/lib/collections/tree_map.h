@@ -1,8 +1,76 @@
-#ifndef ORDER_INC_ORDER_LIB_COLLECTIONS_TREE_MAP_H
-#define ORDER_INC_ORDER_LIB_COLLECTIONS_TREE_MAP_H
+#ifndef ORDER_INC_ORDER_LIB_COLLECTIONS_TREE_TREE_MAP_H
+#define ORDER_INC_ORDER_LIB_COLLECTIONS_TREE_TREE_MAP_H
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.)
+
+#define ORDER_PP_DEF_8tree_map(...) 8EVAL_TREE_MAP,ORDER_PP_0EVAL_TREE_MAP_ARGS(__VA_ARGS__)(0tree_map_eval_terminate,),
+
+#define ORDER_PP_0EVAL_TREE_MAP_ARGS(...) ORDER_PP_OVERLOAD(0EVAL_TREE_MAP_ARGS, ORDER_PP_IS_TUPLE_SIZE_1(,__VA_ARGS__)(,1,N))(__VA_ARGS__)
+#define ORDER_PP_0EVAL_TREE_MAP_ARGS_1(cmp) cmp,ORDER_PP_SEQ_AT_0
+#define ORDER_PP_0EVAL_TREE_MAP_ARGS_N(cmp, ...) cmp,ORDER_PP_SEQ_AT_0 __VA_ARGS__
+
+#define ORDER_PP_8EVAL_TREE_MAP(P, env, q_cmp, q_head_key, q_head_value, tail, G, ...) \
+                          (,P##env,ORDER_PP_DEF_##q_cmp,8EVAL_TREE_MAP_LOOP,P##q_head_key,P##q_head_value,P##tail,,P##env,P##__VA_ARGS__)
+#define ORDER_PP_8EVAL_TREE_MAP_LOOP(P, cmp, q_head_key, q_head_value, tail, acc, env, ...) \
+                               (,P##env,ORDER_PP_DEF_##q_head_key,8EVAL_TREE_MAP_LOOP_B,P##q_head_value,P##tail,P##acc,P##cmp,P##env,P##__VA_ARGS__)
+#define ORDER_PP_8EVAL_TREE_MAP_LOOP_B(P, head_key, q_head_value, tail, acc, cmp, env, ...) \
+                                 (,P##env,ORDER_PP_DEF_##q_head_value,8EVAL_TREE_MAP_LOOP_C,P##head_key,P##tail,P##acc,P##cmp,P##env,P##__VA_ARGS__)
+#define ORDER_PP_8EVAL_TREE_MAP_LOOP_C(P, head_value, head_key, tail, acc, cmp, env, ...) \
+                                 (,P##cmp,8EVAL_TREE_MAP_LOOP,ORDER_PP_SEQ_AT_0 tail##P,P##acc(P##head_key,P##head_value),P##env,P##__VA_ARGS__)
+
+#define ORDER_PP_DEF_0tree_map_eval_terminate 0EVAL_TREE_MAP_TERMINATE,
+#define ORDER_PP_0EVAL_TREE_MAP_TERMINATE(P, env, G, _eval_tree_map_loop_b_, _q_head_value_, _tail_, _acc_, _cmp_, _env_,...) \
+                                    (,P##env, ORDER_PP_DEF_8tree_map_from_seq_of_pairs, 0EVAL_TREE_MAP_TERMINATE_B, P##_cmp_, ORDER_PP_9VSEQ_TO_SEQ_OF_TUPLES(,P##_acc_), P##__VA_ARGS__)
+#define ORDER_PP_0EVAL_TREE_MAP_TERMINATE_B(P, fold_fn, cmp, acc, ...) (,P##cmp,ORDER_PP_OPEN fold_fn##P,8AP, P##acc,P##__VA_ARGS__)
+
+
+#define ORDER_PP_DEF_8tree_map_comparison_fn ORDER_PP_FN_NATIVE(1,8TREE_MAP_COMPARISON_FN,0IS_TREE_MAP)
+#define ORDER_PP_8TREE_MAP_COMPARISON_FN(P, map) ORDER_PP_FX(TUPLE_AT_0,(,ORDER_PP_REM P##map,))
+
+
+#define ORDER_PP_DEF_8tree_map_at \
+ORDER_PP_FN(8fn(8K, 8M, \
+                 0tm_get(8tree_map_comparison_fn(8M), 8K, 0tree_map_items(8M))))
+
+
+#define ORDER_PP_DEF_8tree_map_insert \
+ORDER_PP_FN(8fn(8K, 8V, 8M, \
+                0tree_map_reset(0tm_insert(8tree_map_comparison_fn(8M), 0tm_node(8K, 8V), 0tree_map_items(8M)), 8M)))
+
+
+#define ORDER_PP_DEF_8tree_map_erase \
+ORDER_PP_FN(8fn(8K, 8M, \
+                0tree_map_reset(0tm_delete(8tree_map_comparison_fn(8M), 8K, 0tree_map_items(8M)), 8M)))
+
+
+#define ORDER_PP_DEF_8tree_map_exists \
+ORDER_PP_FN(8fn(8K, 8M, \
+                0tree_map_reset(0tm_member(8tree_map_comparison_fn(8M), 8K, 0tree_map_items(8M)), 8M)))
+
+
+#define ORDER_PP_DEF_8is_tree_map ORDER_PP_FN_CM(1,8IS_TREE_MAP,0IS_ANY)
+#define ORDER_PP_8IS_TREE_MAP(P,x,...) (,ORDER_PP_0IS_TREE_MAP(,P##x)(,8true,8false),P##__VA_ARGS__)
+
+#define ORDER_PP_DEF_8tree_map_from_seq_of_pairs \
+ORDER_PP_FN(8fn(8C, 8S, \
+                8pair(8C, 8seq_fold(8fn(8A, 8P, 0tm_insert(8C, 8P, 8A)), \
+                                        0tm_leaf(0tm_black), \
+                                    8S))))
+
+// Detail
+
+#define ORDER_PP_DEF_0tree_map_items ORDER_PP_FN_NATIVE(1,0TREE_MAP_ITEMS,0IS_TREE_MAP)
+#define ORDER_PP_0TREE_MAP_ITEMS(P, map) ORDER_PP_FX(TUPLE_AT_1,(,ORDER_PP_REM P##map,))
+
+#define ORDER_PP_DEF_0tree_map_reset ORDER_PP_FN(8fn(8E, 8M, 8pair(8tree_map_comparison_fn(8M), 8E)))
+
+#define ORDER_PP_0IS_TREE_MAP(P,x) ORDER_PP_AND                                                                  \
+                              (and)(ORDER_PP_0IS_TUPLE(,P##x))                                              \
+                              (and)(ORDER_PP_FY(IS_TUPLE_SIZE_2,(,ORDER_PP_REM P##x)))                      \
+                              (and)(ORDER_PP_FY(0IS_FN,(,ORDER_PP_FX(TUPLE_AT_0,(,ORDER_PP_REM P##x,)))))()
+
+// Implementation
 
 #define ORDER_PP_DEF_0tm_node ORDER_PP_FN(8fn(8K, 8V, 8pair(8K, 8V)))
 #define ORDER_PP_DEF_0tm_node_key ORDER_PP_FN(8fn(8N, 8tuple_at_0(8N)))
