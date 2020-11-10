@@ -4,3 +4,4 @@
 #include "order/lib/collections/map.h"
 #include "order/lib/collections/set.h"
 #include "order/lib/collections/tree_map.h"
+#include "order/lib/collections/pqueue.h"
