@@ -55,7 +55,7 @@ ORDER_PP_FN(8fn(8K, 8M, \
 #define ORDER_PP_DEF_8tree_map_from_seq_of_pairs \
 ORDER_PP_FN(8fn(8C, 8S, \
                 8pair(8C, 8seq_fold(8fn(8A, 8P, 0tm_insert(8C, 8P, 8A)), \
-                                        0tm_leaf(0tm_black), \
+                                    0tm_leaf(0tm_black), \
                                     8S))))
 
 // Detail
@@ -78,7 +78,7 @@ ORDER_PP_FN(8fn(8C, 8S, \
 
 #define ORDER_PP_DEF_0tm_black ORDER_PP_CONST(0)
 #define ORDER_PP_DEF_0tm_red ORDER_PP_CONST(1)
-#define ORDER_PP_DEF_0tm_bblack ORDER_PP_CONST(1)
+#define ORDER_PP_DEF_0tm_bblack ORDER_PP_CONST(2)
 
 #define ORDER_PP_DEF_0tm_tree ORDER_PP_FN(8fn(8C, 8L, 8N, 8R, \
                                               8with_assert(8and(8is_lit(8C), 8is_tuple(8L), 8is_tuple(8N), 8is_tuple(8R)), 8tuple(8C, 8L, 8N, 8R))))
@@ -94,6 +94,8 @@ ORDER_PP_FN(8fn(8C, 8S, \
 #define ORDER_PP_DEF_0tm_leaf ORDER_PP_FN(8fn(8C, 8tuple(8C)))
 #define ORDER_PP_DEF_0tm_leaf_colored ORDER_PP_FN(8fn(8T, 8C, 8and(0tm_is_leaf(8T), 0tm_tree_colored_impl(0tm_tree_color(8T), 8C))))
 #define ORDER_PP_DEF_0tm_is_leaf ORDER_PP_FN(8fn(8T, 8is_seq(8T)))
+
+#define ORDER_PP_DEF_0tm_either_colored ORDER_PP_FN(8fn(8T, 8C, 0tm_tree_colored_impl(0tm_tree_color(8T), 8C)))
 
 
 #define ORDER_PP_DEF_0tm_make_tree_black \
@@ -170,7 +172,7 @@ ORDER_PP_FN(8fn(8T, \
 
 #define ORDER_PP_DEF_0tm_redden \
 ORDER_PP_FN(8fn(8T, \
-                8cond((8and(0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_black), 0tm_tree_colored(0tm_tree_right(8T), 0tm_black)), \
+                8cond((8and(0tm_tree_colored(8T, 0tm_black), 0tm_either_colored(0tm_tree_left(8T), 0tm_black), 0tm_either_colored(0tm_tree_right(8T), 0tm_black)), \
                        8apply(8fn(8C, 8L, 8N, 8R, \
                                   0tm_tree(0tm_red, 8L, 8N, 8R)), \
                               8T)) \
@@ -194,32 +196,32 @@ ORDER_PP_FN(8fn(8T, \
                                              8pair(8M, 0tm_rotate(0tm_tree(8C, 8L, 8N, 8R)))), \
                                          0tm_min_delete(8L))), \
                               8T)) \
-                      (8else, 8exit(8(called min_delete on miscolored leaf node))))))
+                      (8else, 8exit(8T)))))
 
 
 #define ORDER_PP_DEF_0tm_rotate \
 ORDER_PP_FN(8fn(8T, \
-                8cond((8and(0tm_tree_colored(8T, 0tm_red), 0tm_tree_colored(0tm_tree_left(8T), 0tm_bblack), 0tm_tree_colored(0tm_tree_right(8T), 0tm_black)), \
+                8cond((8and(0tm_tree_colored(8T, 0tm_red), 0tm_either_colored(0tm_tree_left(8T), 0tm_bblack), 0tm_tree_colored(0tm_tree_right(8T), 0tm_black)), \
                        8apply(8fn(8_, 8A, 8Y, 8_, 8_, 8C, 8Z, 8D, \
                                   0tm_balance(0tm_tree(0tm_black, 0tm_tree(0tm_red, 0tm_demote_bblack(8A), 8Y, 8C), 8Z, 8D))), \
                               8tuple_append(8T, 0tm_tree_right(8T)))) \
-                      (8and(0tm_tree_colored(8T, 0tm_red), 0tm_tree_colored(0tm_tree_left(8T), 0tm_black), 0tm_tree_colored(0tm_tree_right(8T), 0tm_bblack)), \
+                      (8and(0tm_tree_colored(8T, 0tm_red), 0tm_tree_colored(0tm_tree_left(8T), 0tm_black), 0tm_either_colored(0tm_tree_right(8T), 0tm_bblack)), \
                        8apply(8fn(8_, 8_, 8Y, 8C, 8_, 8A, 8X, 8B, \
                                   0tm_balance(0tm_tree(0tm_black, 8A, 8X, 0tm_tree(0tm_red, 8B, 8Y, 0tm_demote_bblack(8C))))), \
                               8tuple_append(8T, 0tm_tree_left(8T)))) \
-                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_bblack), 0tm_tree_colored(0tm_tree_right(8T), 0tm_black)), \
+                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_either_colored(0tm_tree_left(8T), 0tm_bblack), 0tm_tree_colored(0tm_tree_right(8T), 0tm_black)), \
                        8apply(8fn(8_, 8A, 8Y, 8_, 8_, 8C, 8Z, 8D, \
                                   0tm_balance(0tm_tree(0tm_bblack, 0tm_tree(0tm_red, 0tm_demote_bblack(8A), 8Y, 8C), 8Z, 8D))), \
                               8tuple_append(8T, 0tm_tree_right(8T)))) \
-                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_black), 0tm_tree_colored(0tm_tree_right(8T), 0tm_bblack)), \
+                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_black), 0tm_either_colored(0tm_tree_right(8T), 0tm_bblack)), \
                        8apply(8fn(8_, 8_, 8Y, 8C, 8_, 8A, 8X, 8B, \
                                   0tm_balance(0tm_tree(0tm_bblack, 8A, 8X, 0tm_tree(0tm_red, 8B, 8Y, 0tm_demote_bblack(8C))))), \
                               8tuple_append(8T, 0tm_tree_left(8T)))) \
-                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_bblack), 0tm_tree_colored(0tm_tree_right(8T), 0tm_red), 0tm_tree_colored(0tm_tree_left(0tm_tree_right(8T)), 0tm_black)), \
+                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_either_colored(0tm_tree_left(8T), 0tm_bblack), 0tm_tree_colored(0tm_tree_right(8T), 0tm_red), 0tm_tree_colored(0tm_tree_left(0tm_tree_right(8T)), 0tm_black)), \
                        8apply(8fn(8_, 8A, 8X, 8_, 8_, 8_, 8Z, 8E, 8_, 8C, 8Y, 8D, \
                                   0tm_tree(0tm_black, 0tm_balance(0tm_tree(0tm_red, 0tm_demote_bblack(8A), 8X, 8C)), 8Z, 8E)), \
                               8tuple_append(8T, 0tm_tree_right(8T), 0tm_tree_left(0tm_tree_right(8T))))) \
-                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_red), 0tm_tree_colored(0tm_tree_right(0tm_tree_left(8T)), 0tm_black), 0tm_tree_colored(0tm_tree_right, 0tm_bblack)), \
+                      (8and(0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_red), 0tm_tree_colored(0tm_tree_right(0tm_tree_left(8T)), 0tm_black), 0tm_either_colored(0tm_tree_right, 0tm_bblack)), \
                        8apply(8fn(8_, 8_, 8Y, 8D, 8_, 8A, 8W, 8_, 8_, 8B, 8X, 8C, \
                                   0tm_tree(0tm_black, 8A, 8W, 0tm_balance(0tm_tree(0tm_black, 8B, 8X, 0tm_tree(0tm_red, 8C, 8Y, 0tm_demote_bblack(8D)))))), \
                               8tuple_append(8T, 0tm_tree_left(8T), 0tm_tree_right(0tm_tree_left(8T))))) \
