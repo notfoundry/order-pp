@@ -1,5 +1,5 @@
-#ifndef ORDER_INC_ORDER_LIB_PQUEUE_H
-#define ORDER_INC_ORDER_LIB_PQUEUE_H
+#ifndef ORDER_INC_ORDER_LIB_COLLECTIONS_PQUEUE_H
+#define ORDER_INC_ORDER_LIB_COLLECTIONS_PQUEUE_H
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.)
