@@ -230,7 +230,7 @@ ORDER_PP_FN(8fn(8T, \
 ORDER_PP_FN(8fn(8E, 8K, 8T, \
                 8cond((0tm_leaf_colored(8T, 0tm_black), 8T) \
                       (0tm_is_tree(8T), \
-                       8let((8L, 8ap(8E, 8K, 0tm_node_key(0tm_tree_node(8T))))(8G, 8ap(8E, 8K, 0tm_node_key(0tm_tree_node(8T)))), \
+                       8let((8L, 8ap(8E, 8K, 0tm_node_key(0tm_tree_node(8T))))(8G, 8ap(8E, 0tm_node_key(0tm_tree_node(8T)), 8K)), \
                             8cond((8and(8not(8or(8L, 8G)), 0tm_tree_colored(8T, 0tm_red), 0tm_leaf_colored(0tm_tree_left(8T), 0tm_black), 0tm_leaf_colored(0tm_tree_right(8T), 0tm_black)), \
                                    0tm_leaf(0tm_black)) \
                                   (8and(8not(8or(8L, 8G)), 0tm_tree_colored(8T, 0tm_black), 0tm_tree_colored(0tm_tree_left(8T), 0tm_red), 0tm_leaf_colored(0tm_tree_right(8T), 0tm_black)), \
