@@ -72,30 +72,29 @@ ORDER_PP_FN(8fn(8C, 8S, \
 
 // Implementation
 
-#define ORDER_PP_DEF_0tm_node ORDER_PP_FN(8fn(8K, 8V, 8pair(8K, 8V)))
-#define ORDER_PP_DEF_0tm_node_key ORDER_PP_FN(8fn(8N, 8tuple_at_0(8N)))
-#define ORDER_PP_DEF_0tm_node_value ORDER_PP_FN(8fn(8N, 8tuple_at_1(8N)))
+#define ORDER_PP_DEF_0tm_node ORDER_PP_MACRO(8pair)
+#define ORDER_PP_DEF_0tm_node_key ORDER_PP_MACRO(8tuple_at_0)
+#define ORDER_PP_DEF_0tm_node_value ORDER_PP_MACRO(8tuple_at_1)
 
 #define ORDER_PP_DEF_0tm_black ORDER_PP_CONST(0)
 #define ORDER_PP_DEF_0tm_red ORDER_PP_CONST(1)
 #define ORDER_PP_DEF_0tm_bblack ORDER_PP_CONST(2)
 
-#define ORDER_PP_DEF_0tm_tree ORDER_PP_FN(8fn(8C, 8L, 8N, 8R, \
-                                              8with_assert(8and(8is_lit(8C), 8is_tuple(8L), 8is_tuple(8N), 8is_tuple(8R)), 8tuple(8C, 8L, 8N, 8R))))
-#define ORDER_PP_DEF_0tm_tree_color ORDER_PP_FN(8fn(8T, 8tuple_at_0(8T)))
-#define ORDER_PP_DEF_0tm_tree_left ORDER_PP_FN(8fn(8T, 8tuple_at_1(8T)))
-#define ORDER_PP_DEF_0tm_tree_node ORDER_PP_FN(8fn(8T, 8tuple_at_2(8T)))
-#define ORDER_PP_DEF_0tm_tree_right ORDER_PP_FN(8fn(8T, 8tuple_at_3(8T)))
-#define ORDER_PP_DEF_0tm_tree_colored ORDER_PP_FN(8fn(8T, 8C, 8and(0tm_is_tree(8T), 0tm_tree_colored_impl(0tm_tree_color(8T), 8C))))
-#define ORDER_PP_DEF_0tm_is_tree ORDER_PP_FN(8fn(8T, 8not(0tm_is_leaf(8T))))
+#define ORDER_PP_DEF_0tm_tree(color,left,node,right) ORDER_PP_MACRO(8tuple(color,left,node,right))
+#define ORDER_PP_DEF_0tm_tree_color ORDER_PP_MACRO(8tuple_at_0)
+#define ORDER_PP_DEF_0tm_tree_left ORDER_PP_MACRO(8tuple_at_1)
+#define ORDER_PP_DEF_0tm_tree_node ORDER_PP_MACRO(8tuple_at_2)
+#define ORDER_PP_DEF_0tm_tree_right ORDER_PP_MACRO(8tuple_at_3)
+#define ORDER_PP_DEF_0tm_tree_colored(tree,color) ORDER_PP_MACRO(8and(0tm_is_tree(tree), 0tm_tree_colored_impl(0tm_tree_color(tree), color)))
+#define ORDER_PP_DEF_0tm_is_tree(tree) ORDER_PP_MACRO(8not(0tm_is_leaf(tree)))
 
-#define ORDER_PP_DEF_0tm_tree_colored_impl ORDER_PP_FN(8fn(8T, 8C, 8equal(8T, 8C)))
+#define ORDER_PP_DEF_0tm_tree_colored_impl ORDER_PP_MACRO(8equal)
 
-#define ORDER_PP_DEF_0tm_leaf ORDER_PP_FN(8fn(8C, 8tuple(8C)))
-#define ORDER_PP_DEF_0tm_leaf_colored ORDER_PP_FN(8fn(8T, 8C, 8and(0tm_is_leaf(8T), 0tm_tree_colored_impl(0tm_tree_color(8T), 8C))))
-#define ORDER_PP_DEF_0tm_is_leaf ORDER_PP_FN(8fn(8T, 8is_seq(8T)))
+#define ORDER_PP_DEF_0tm_leaf(color) ORDER_PP_MACRO(8tuple(color))
+#define ORDER_PP_DEF_0tm_leaf_colored(leaf,color) ORDER_PP_MACRO(8and(0tm_is_leaf(leaf), 0tm_tree_colored_impl(0tm_tree_color(leaf), color)))
+#define ORDER_PP_DEF_0tm_is_leaf ORDER_PP_MACRO(8is_seq)
 
-#define ORDER_PP_DEF_0tm_either_colored ORDER_PP_FN(8fn(8T, 8C, 0tm_tree_colored_impl(0tm_tree_color(8T), 8C)))
+#define ORDER_PP_DEF_0tm_either_colored(either,color) ORDER_PP_MACRO(0tm_tree_colored_impl(0tm_tree_color(either), color))
 
 
 #define ORDER_PP_DEF_0tm_make_tree_black \
@@ -196,7 +195,7 @@ ORDER_PP_FN(8fn(8T, \
                                              8pair(8M, 0tm_rotate(0tm_tree(8C, 8L, 8N, 8R)))), \
                                          0tm_min_delete(8L))), \
                               8T)) \
-                      (8else, 8exit(8T)))))
+                      (8else, 8exit(called min_delete on miscolored leaf)))))
 
 
 #define ORDER_PP_DEF_0tm_rotate \
@@ -251,9 +250,7 @@ ORDER_PP_FN(8fn(8E, 8K, 8T, \
                       (8else, 8exit(8(called delete_impl on malformed tree))))))
 
 
-#define ORDER_PP_DEF_0tm_delete \
-ORDER_PP_FN(8fn(8E, 8K, 8T, \
-                0tm_delete_impl(8E, 8K, 0tm_redden(8T))))
+#define ORDER_PP_DEF_0tm_delete(eq,key,tree) ORDER_PP_MACRO(0tm_delete_impl(eq, key, 0tm_redden(tree)))
 
 
 #define ORDER_PP_DEF_0tm_insert_impl \
@@ -266,8 +263,6 @@ ORDER_PP_FN(8fn(8E, 8X, 8T, \
                                      (8else, 0tm_tree(8C, 8L, 8X, 8R)))), \
                            8T))))
 
-#define ORDER_PP_DEF_0tm_insert \
-ORDER_PP_FN(8fn(8E, 8N, 8T, \
-                0tm_make_tree_black(0tm_insert_impl(8E, 8N, 8T))))
+#define ORDER_PP_DEF_0tm_insert(eq,node,tree) ORDER_PP_MACRO(0tm_make_tree_black(0tm_insert_impl(eq, node, tree)))
 
 #endif
