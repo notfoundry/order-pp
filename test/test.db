@@ -388,29 +388,29 @@
 8while(8greater(8),8plus(2),0)#8#
 8with_assert(8and(8true,8false),8add(5,6))#ORDER_PP_ASSERTION_FAILURE:8with_assert(8and ( 8true , 8false ),8add ( 5 , 6 )):(,8EXIT,,)#ORDER_PP_ASSERTION_FAILURE
 8with_assert(8or(8false,8true),8put(1),8put(2),3)#1 2 3#
-8map_items(8map(8equal))##
-8map_items(8map(8equal,(1,2)(3,4)))#((1,2))((3,4))#
-8map_items(8map(8equal,(8add(2,3),10)))#((5,10))#
-8is_map(8map(8equal))#8true#
-8map_exists(7,8map(8equal,(8add(5,2), 10)))#8true#
-8map_exists(8,8map(8equal,(8add(5,2), 10)))#8false#
-8map_equivalence_fn(8map(8equal))#(,8NATIVE,1,9EQUAL,(,0IS_NUM,0IS_NUM,))#
-8map_items(8map(8equal,(1,2)(8add(2,3),10)(8,20)))#((1,2))((5,10))((8,20))#
-8to_lit(8map_size(8map(8equal,(1,2)(8add(2,3),10)(8,20))))#3#
-8map_keys(8map(8equal,(1,2)(8add(2,3),10)(8,20)))#(1)(5)(8)#
-8map_values(8map(8equal,(1,2)(8add(2,3),10)(8,20)))#(2)(10)(20)#
-8map_items(8map_insert(5, 10, 8map(8equal)))#((5,10))#
-8map_items(8map_insert(5,20,8map_insert(5,10,8map(8equal))))#((5,20))#
-8map_items(8map_symm_diff(8map(8equal,(0,0)(1,2)(3,4)(5,6)),8map(8equal,(1,22)(3,44)(5,66)(7,88))))#((7,88))((0,0))#
-8map_items(8map_intersect(8map(8equal,(0,0)(1,2)(3,4)(5,6)),8map(8equal,(1,22)(3,44)(5,66)(7,88))))#((1,2))((3,4))((5,6))#
-8set_items(8map(8equal))##
-8set_items(8set(8equal,(1)(4)))#(1)(4)#
-8set_items(8set(8equal,(8add(2,3))))#(5)#
-8is_set(8set(8equal))#8true#
-8set_exists(7,8set(8equal,(8add(5,2))))#8true#
-8set_exists(8,8set(8equal,(8add(5,2))))#8false#
-8set_equivalence_fn(8set(8equal))#(,8NATIVE,1,9EQUAL,(,0IS_NUM,0IS_NUM,))#
-8to_lit(8set_size(8set(8equal,(1)(8add(2,3))(8))))#3#
-8set_items(8set_union(8set(8equal,(1)(3)(5)),8set(8equal,(1)(3)(5)(7))))#(1)(3)(5)(7)#
-8set_items(8set_intersect(8set(8equal,(0)(1)(3)(5)),8set(8equal,(1)(3)(5)(7))))#(1)(3)(5)#
-8set_items(8set_symm_diff(8set(8equal,(0)(1)(3)(5)),8set(8equal,(1)(3)(5)(7))))#(7)(0)#
+8eq_map_items(8eq_map(8equal))##
+8eq_map_items(8eq_map(8equal,(1,2)(3,4)))#((1,2))((3,4))#
+8eq_map_items(8eq_map(8equal,(8add(2,3),10)))#((5,10))#
+8is_map(8eq_map(8equal))#8true#
+8eq_map_exists(7,8eq_map(8equal,(8add(5,2), 10)))#8true#
+8eq_map_exists(8,8eq_map(8equal,(8add(5,2), 10)))#8false#
+8eq_map_equivalence_fn(8eq_map(8equal))#(,8NATIVE,1,9EQUAL,(,0IS_NUM,0IS_NUM,))#
+8eq_map_items(8eq_map(8equal,(1,2)(8add(2,3),10)(8,20)))#((1,2))((5,10))((8,20))#
+8to_lit(8eq_map_size(8eq_map(8equal,(1,2)(8add(2,3),10)(8,20))))#3#
+8eq_map_keys(8eq_map(8equal,(1,2)(8add(2,3),10)(8,20)))#(1)(5)(8)#
+8eq_map_values(8eq_map(8equal,(1,2)(8add(2,3),10)(8,20)))#(2)(10)(20)#
+8eq_map_items(8eq_map_insert(5, 10, 8eq_map(8equal)))#((5,10))#
+8eq_map_items(8eq_map_insert(5,20,8eq_map_insert(5,10,8eq_map(8equal))))#((5,20))#
+8eq_map_items(8eq_map_symm_diff(8eq_map(8equal,(0,0)(1,2)(3,4)(5,6)),8eq_map(8equal,(1,22)(3,44)(5,66)(7,88))))#((7,88))((0,0))#
+8eq_map_items(8eq_map_intersect(8eq_map(8equal,(0,0)(1,2)(3,4)(5,6)),8eq_map(8equal,(1,22)(3,44)(5,66)(7,88))))#((1,2))((3,4))((5,6))#
+8eq_set_items(8eq_map(8equal))##
+8eq_set_items(8eq_set(8equal,(1)(4)))#(1)(4)#
+8eq_set_items(8eq_set(8equal,(8add(2,3))))#(5)#
+8is_eq_set(8eq_set(8equal))#8true#
+8eq_set_exists(7,8eq_set(8equal,(8add(5,2))))#8true#
+8eq_set_exists(8,8eq_set(8equal,(8add(5,2))))#8false#
+8eq_set_equivalence_fn(8eq_set(8equal))#(,8NATIVE,1,9EQUAL,(,0IS_NUM,0IS_NUM,))#
+8to_lit(8eq_set_size(8eq_set(8equal,(1)(8add(2,3))(8))))#3#
+8eq_set_items(8eq_set_union(8eq_set(8equal,(1)(3)(5)),8eq_set(8equal,(1)(3)(5)(7))))#(1)(3)(5)(7)#
+8eq_set_items(8eq_set_intersect(8eq_set(8equal,(0)(1)(3)(5)),8eq_set(8equal,(1)(3)(5)(7))))#(1)(3)(5)#
+8eq_set_items(8eq_set_symm_diff(8eq_set(8equal,(0)(1)(3)(5)),8eq_set(8equal,(1)(3)(5)(7))))#(7)(0)#

@@ -18,7 +18,7 @@
 #define ORDER_PP_0EVAL_PQUEUE_TERMINATE(P, env, G, _eval_pqueue_loop_b_, _tail_, _acc_, _cmp_, _env_,...) \
                                        (,P##_acc_, 8SEQ_MERGE_SORT, P##_cmp_, 0EVAL_PQUEUE_TERMINATE_B, P##_cmp_, P##__VA_ARGS__)
 #define ORDER_PP_0EVAL_PQUEUE_TERMINATE_B(P, acc, cmp, ...) \
-                                         (,(P##cmp, P##acc), P##__VA_ARGS__)
+                                         (,(P##cmp,P##acc), P##__VA_ARGS__)
 
 
 #define ORDER_PP_DEF_8pqueue_compare_fn ORDER_PP_FN_NATIVE(1,8PQUEUE_COMPARE_FN,0IS_PQUEUE)
