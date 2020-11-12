@@ -48,13 +48,10 @@
 
 #define ORDER_PP_DEF_8hash_map_capacity ORDER_PP_FN(8fn(8M, 0hm_capacity(8M)))
 
+#define ORDER_PP_DEF_8hash_map_items ORDER_PP_FN_CM(1,8HASH_MAP_ITEMS,0IS_ANY)
+#define ORDER_PP_8HASH_MAP_ITEMS(P,map,...) (,,8HASH_MAP_ITEMS_LOOP,ORDER_PP_SCAN(ORDER_PP_SEQ_AT_0 ORDER_PP_0HASH_MAP_BUCKETS(,P##map)),P##__VA_ARGS__) //
+#define ORDER_PP_8HASH_MAP_ITEMS_LOOP(P,acc,head_bucket,tail_buckets,...) (,ORDER_PP_SEQ_IS_NIL(,P##tail_buckets)(,ORDER_PP_LEFT(,acc##P)P##head_bucket,ORDER_PP_LEFT(,acc##P)P##head_bucket,8HASH_MAP_ITEMS_LOOP,ORDER_PP_SEQ_AT_0 P##tail_buckets),P##__VA_ARGS__)
 
-#define ORDER_PP_DEF_8hash_map_items \
-ORDER_PP_FN(8fn(8M, \
-                8seq_fold(8fn(8A, 8B, \
-                              8seq_join(8A, 8B)), \
-                          8nil, \
-                          0hm_buckets(8M))))
 
 #define ORDER_PP_DEF_8hash_map_keys ORDER_PP_FN(8fn(8M, 8seq_map(8tuple_at_0, 8hash_map_items(8M))))
 #define ORDER_PP_DEF_8hash_map_values ORDER_PP_FN(8fn(8M, 8seq_map(8tuple_at_1, 8hash_map_items(8M))))
@@ -85,6 +82,42 @@ ORDER_PP_FN(8fn(8K, 8M, \
                              8seq_at(0hm_bucket_index(8K, 0hm_hash_fn(8M), 0hm_capacity(8M)), 0hm_buckets(8M)))))
 
 
+#define ORDER_PP_DEF_8hash_map_union \
+ORDER_PP_FN(8fn(8M, 8N, \
+                8seq_fold(8fn(8A, 8E, \
+                              0hm_insert_pair(8E, 8A)), \
+                          8M, \
+                          8hash_map_items(8N))))
+
+
+#define ORDER_PP_DEF_8hash_map_intersect \
+ORDER_PP_FN(8fn(8M, 8N, \
+                8seq_fold(8fn(8A, 8E, \
+                              8if(8hash_map_exists(8tuple_at_0(8E), 8N), \
+                                  0hm_insert_pair(8E, 8A), \
+                                  8A)), \
+                          0hm_map_empty(0hm_equivalence_fn(8M), 0hm_hash_fn(8M), 8max(0hm_capacity(8M), 0hm_capacity(8N))), \
+                          8hash_map_items(8M))))
+
+
+#define ORDER_PP_DEF_8hash_map_diff \
+ORDER_PP_FN(8fn(8M, 8N, \
+                8seq_fold(8fn(8A, 8E, \
+                              8if(8hash_map_exists(8tuple_at_0(8E), 8N), \
+                                  8A, \
+                                  0hm_insert_pair(8E, 8A))), \
+                          0hm_map_empty(0hm_equivalence_fn(8M), 0hm_hash_fn(8M), 8max(0hm_capacity(8M), 0hm_capacity(8N))), \
+                          8hash_map_items(8M))))
+
+
+#define ORDER_PP_DEF_8hash_map_symm_diff \
+ORDER_PP_FN(8fn(8M, 8N, \
+                8seq_fold(8fn(8A, 8E, \
+                              8hash_map_erase(8tuple_at_0(8E), 8A)), \
+                          8hash_map_union(8M, 8N), \
+                          8hash_map_items(8hash_map_intersect(8M, 8N)))))
+
+
 #define ORDER_PP_DEF_8hash_map_from_seq_of_pairs \
 ORDER_PP_FN(8fn(8E, 8H, 8C, 8S, \
                 8seq_fold(8fn(8A, 8P, 8hash_map_insert(8tuple_at_0(8P), 8tuple_at_1(8P), 8A)), \
@@ -100,7 +133,9 @@ ORDER_PP_FN(8fn(8E, 8H, 8C, 8S, \
 #define ORDER_PP_DEF_0hm_hash_fn ORDER_PP_MACRO(8tuple_at_1)
 #define ORDER_PP_DEF_0hm_size ORDER_PP_MACRO(8tuple_at_2)
 #define ORDER_PP_DEF_0hm_capacity ORDER_PP_MACRO(8tuple_at_3)
-#define ORDER_PP_DEF_0hm_buckets ORDER_PP_MACRO(8tuple_at_4)
+
+#define ORDER_PP_DEF_0hm_buckets ORDER_PP_FN_NATIVE(1,0HASH_MAP_BUCKETS,0IS_ANY)
+#define ORDER_PP_0HASH_MAP_BUCKETS(P,map) ORDER_PP_FX(TUPLE_AT_4,(,ORDER_PP_REM P##map,))
 
 
 #define ORDER_PP_DEF_0hm_node ORDER_PP_MACRO(8pair)
@@ -153,8 +188,9 @@ ORDER_PP_FN(8fn(8K, 8E, 8B, \
 
 #define ORDER_PP_DEF_0hm_node_matches(key,eq,node) ORDER_PP_MACRO(8ap(eq,key,0hm_node_key(node)))
 
-
 #define ORDER_PP_DEF_0hm_map_reset(size,capacity,buckets,map) \
 ORDER_PP_MACRO(0hm_map(0hm_equivalence_fn(map),0hm_hash_fn(map),size,capacity,buckets))
+
+#define ORDER_PP_DEF_0hm_insert_pair(pair,map) ORDER_PP_MACRO(8hash_map_insert(8tuple_at_0(pair), 8tuple_at_1(pair), map))
 
 #endif
