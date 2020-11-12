@@ -113,9 +113,11 @@ ORDER_PP_FN(8fn(8M, 8N, \
 #define ORDER_PP_DEF_8hash_map_symm_diff \
 ORDER_PP_FN(8fn(8M, 8N, \
                 8seq_fold(8fn(8A, 8E, \
-                              8hash_map_erase(8tuple_at_0(8E), 8A)), \
-                          8hash_map_union(8M, 8N), \
-                          8hash_map_items(8hash_map_intersect(8M, 8N)))))
+                              8if(8and(8hash_map_exists(8tuple_at_0(8E), 8M), 8hash_map_exists(8tuple_at_0(8E), 8N)), \
+                                  8A, \
+                                  0hm_insert_pair(8E, 8A))), \
+                          0hm_map_empty(0hm_equivalence_fn(8M), 0hm_hash_fn(8M), 8max(0hm_capacity(8M), 0hm_capacity(8N))), \
+                          8seq_join(8hash_map_items(8M), 8hash_map_items(8N)))))
 
 
 #define ORDER_PP_DEF_8hash_map_from_seq_of_pairs \
