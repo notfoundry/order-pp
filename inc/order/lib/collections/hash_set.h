@@ -8,6 +8,17 @@
 
 // First-order
 
+#define ORDER_PP_DEF_8hash_set(...) ORDER_PP_0HASH_SET_CHOOSE_CTOR(__VA_ARGS__),__VA_ARGS__,
+
+#define ORDER_PP_0HASH_SET_CHOOSE_CTOR(...) ORDER_PP_OVERLOAD(0HASH_SET_CHOOSE_CTOR,ORDER_PP_TUPLE_SIZE(,__VA_ARGS__))(__VA_ARGS__) 
+#define ORDER_PP_0HASH_SET_CHOOSE_CTOR_2(q_eq,q_hash) 0HASH_MAP_CTOR_EQ_HASH
+#define ORDER_PP_0HASH_SET_CHOOSE_CTOR_3(q_eq,q_hash,q_cap_or_items) ORDER_PP_ISNT_EDIBLE(,q_cap_or_items)(,0HASH_MAP_CTOR_EQ_HASH_CAPACITY,0HASH_SET_CTOR_EQ_HASH_ITEMS)
+
+#define ORDER_PP_0HASH_SET_CTOR_EQ_HASH_ITEMS(P,env,q_eq,q_hash,q_items,G,...) (,,0HASH_SET_CTOR_EQ_HASH_ITEMS_LOOP,ORDER_PP_SEQ_AT_0 P##q_items,0HASH_SET_CTOR_EQ_HASH_ITEMS_END,P##q_eq,P##q_hash,P##env,P##__VA_ARGS__)
+#define ORDER_PP_0HASH_SET_CTOR_EQ_HASH_ITEMS_LOOP(P,acc,q_head,q_tail,...) (,ORDER_PP_SEQ_IS_NIL(,P##q_tail)(,acc##P(P##q_head,8nil),acc##P(P##q_head,8nil),0HASH_SET_CTOR_EQ_HASH_ITEMS_LOOP,ORDER_PP_SEQ_AT_0 P##q_tail),P##__VA_ARGS__)
+#define ORDER_PP_0HASH_SET_CTOR_EQ_HASH_ITEMS_END(P,acc,q_eq,q_hash,env,...) (,P##env,0HASH_MAP_CTOR_EQ_HASH_ITEMS,P##q_eq,P##q_hash,P##acc,,P##__VA_ARGS__)
+
+
 #define ORDER_PP_DEF_8basb_set_equivalence_fn ORDER_PP_MACRO(8hash_map_equivalence_fn)
 
 
